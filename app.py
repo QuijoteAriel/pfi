@@ -79,10 +79,6 @@ def mostrar_productos():
             print(f"Producto {i}: nombre: {producto['nombre']}, descripcion: {producto['descripcion']}, cantidad: {producto['cantidad']} , precio: {producto['precio']}, categoria: {producto['categoria']}")        
 
 '''
-productos = [
-    {'nombre': 'Manzana', 'precio': 1.5, 'cantidad': 5, 'categoria': 'Frutas', 'origen': 'Argentina'},
-    # ... otros diccionarios
-]
 
 def modificar_producto():
     """
