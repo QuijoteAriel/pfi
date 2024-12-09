@@ -78,6 +78,30 @@ def mostrar_productos():
         for i, producto in enumerate(productos, start=1):  # Enumeramos para mostrar el número de producto
             print(f"Producto {i}: nombre: {producto['nombre']}, descripcion: {producto['descripcion']}, cantidad: {producto['cantidad']} , precio: {producto['precio']}, categoria: {producto['categoria']}")        
 
+'''
+
+def modificar_producto():
+    """
+    Permite al usuario modificar el valor de una clave en un producto específico.
+    """
+
+    try:
+        indice = int(input("Ingrese el índice del producto a modificar: "))
+        clave = input("Ingrese la clave a modificar: ")
+        nuevo_valor = input("Ingrese el nuevo valor: ")
+
+        # Convertir el nuevo valor al tipo de dato apropiado si es necesario
+        if clave in ['precio', 'cantidad']:
+            nuevo_valor = float(nuevo_valor)
+
+        productos[indice][clave] = nuevo_valor
+        print(f"El valor de '{clave}' en el producto {indice} ha sido actualizado a {nuevo_valor}.")
+    except (ValueError, IndexError):
+        print("Error: Ingrese un índice válido y un valor numérico para 'precio' y 'cantidad'.")
+
+# Ejemplo de uso:
+modificar_producto()
+'''
 def actualizar_cantidad():
     if not productos:
         print('No hay productos')
