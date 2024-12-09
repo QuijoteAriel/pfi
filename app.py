@@ -26,8 +26,8 @@ def main():
             continue  # Continuamos el bucle si no es un número válido
 
         if opcion == 1:
-            registrar_producto()
             print('Agregar Producto')
+            registrar_producto()
         elif opcion == 2:
             print('Mostrar Producto')
             mostrar_productos()
@@ -81,7 +81,7 @@ def mostrar_productos():
 def actualizar_cantidad():
     if not productos:
         print('No hay productos')
-    elif clave_prod in productos:
+    elif productos in productos:
         clave_prod = input('Que clave/producto deseas cambiar la cantidad ? : ')
         actualizar_can = input('Que cantidad deseas actualziar? : ')
         productos[clave_prod:actualizar_can]
