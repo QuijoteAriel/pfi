@@ -78,13 +78,41 @@ def mostrar_productos():
         for i, producto in enumerate(productos, start=1):  # Enumeramos para mostrar el número de producto
             print(f"Producto {i}: nombre: {producto['nombre']}, descripcion: {producto['descripcion']}, cantidad: {producto['cantidad']} , precio: {producto['precio']}, categoria: {producto['categoria']}")        
 
+'''
+productos = [
+    {'nombre': 'Manzana', 'precio': 1.5, 'cantidad': 5, 'categoria': 'Frutas', 'origen': 'Argentina'},
+    # ... otros diccionarios
+]
+
+def modificar_producto():
+    """
+    Permite al usuario modificar el valor de una clave en un producto específico.
+    """
+
+    try:
+        indice = int(input("Ingrese el índice del producto a modificar: "))
+        clave = input("Ingrese la clave a modificar: ")
+        nuevo_valor = input("Ingrese el nuevo valor: ")
+
+        # Convertir el nuevo valor al tipo de dato apropiado si es necesario
+        if clave in ['precio', 'cantidad']:
+            nuevo_valor = float(nuevo_valor)
+
+        productos[indice][clave] = nuevo_valor
+        print(f"El valor de '{clave}' en el producto {indice} ha sido actualizado a {nuevo_valor}.")
+    except (ValueError, IndexError):
+        print("Error: Ingrese un índice válido y un valor numérico para 'precio' y 'cantidad'.")
+
+# Ejemplo de uso:
+modificar_producto()
+'''
 def actualizar_cantidad():
     if not productos:
         print('No hay productos')
-    elif clave_prod in productos:
-        clave_prod = input('Que clave/producto deseas cambiar la cantidad ? : ')
-        actualizar_can = input('Que cantidad deseas actualziar? : ')
-        productos[clave_prod:actualizar_can]
+    elif codigo_prod in productos:
+        codigo_prod = input('Que clave/producto deseas cambiar la cantidad ? : ')
+        cantidad = input('Que cantidad deseas actualziar? : ')
+        productos[codigo_prod:cantidad]
         print('Cantidad actualizada correctamente')
     else:
         print('La clave seleccionada no existe ')
