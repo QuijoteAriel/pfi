@@ -1,5 +1,5 @@
-#import sqlite3 
 
+# from funcion_db import *
 productos = []
 codigo_prod = 1
 
@@ -91,16 +91,18 @@ def mostrar_productos():
 def actualizar_cantidad():
     if not productos:
         print('No hay productos')
-    elif productos in productos:
-        clave_prod = input('Que clave/producto deseas cambiar la cantidad ? : ')
-        actualizar_can = input('Que cantidad deseas actualziar? : ')
-        productos[clave_prod:actualizar_can]
-        print('Cantidad actualizada correctamente')
     else:
-        print('La clave seleccionada no existe ')
+        clave_prod = input('Que clave/producto deseas cambiar la cantidad? : ')
+        if clave_prod in productos:
+            actualizar_can = int(input('Que cantidad deseas actualziar? : '))
+            productos[clave_prod] = actualizar_can
+            print('Cantidad actualizada correctamente')
+        else:
+            print('La clave seleccionada no existe')
 
 def eliminar_producto(productos):
     borrar = input("¿Qué producto desea eliminar? : ")
+
 
     # Buscamos el índice del diccionario que queremos eliminar
     for i, producto in enumerate(productos):
