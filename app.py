@@ -1,7 +1,11 @@
+#import sqlite3 
+
 productos = []
 codigo_prod = 1
+
 def main():
     while True:
+        
         print('''
         
        ###################
@@ -19,6 +23,8 @@ def main():
     7. Salir
         ''')
        
+# Funcion principal, la funcion siempre vuelve a ejecutrase cada vez que se realice una accion valida en el programa        
+        
         try:
             opcion = int(input('Elija una opción: '))
         except ValueError:
@@ -51,6 +57,7 @@ def main():
             continue
 
 
+# Funcion registrar  genera un dicccionario a partir de inputs con los datos que se piden    
 def registrar_producto():
   
     nombre = input('Ingrese el nombre del producto: ')
@@ -69,39 +76,18 @@ def registrar_producto():
     productos.append(nuevo_producto)
     print('Producto registrado ', productos)
     
-    
+ # Funcion mostrar, muestra todo lo que esta en el inventario    
 def mostrar_productos():
     if not productos:
-        print('No hay productos')
-    else:
-        print("Lista de productos:")
-        for i, producto in enumerate(productos, start=1):  # Enumeramos para mostrar el número de producto
-            print(f"Producto {i}: nombre: {producto['nombre']}, descripcion: {producto['descripcion']}, cantidad: {producto['cantidad']} , precio: {producto['precio']}, categoria: {producto['categoria']}")        
+        print("No hay productos registrados.")
+        return
 
-'''
+    for i, producto in enumerate(productos, start=1):
+        print(f"Producto {i}:")
+        for clave, valor in producto.items():
+            print(f"  {clave}: {valor}")
 
-def modificar_producto():
-    """
-    Permite al usuario modificar el valor de una clave en un producto específico.
-    """
-
-    try:
-        indice = int(input("Ingrese el índice del producto a modificar: "))
-        clave = input("Ingrese la clave a modificar: ")
-        nuevo_valor = input("Ingrese el nuevo valor: ")
-
-        # Convertir el nuevo valor al tipo de dato apropiado si es necesario
-        if clave in ['precio', 'cantidad']:
-            nuevo_valor = float(nuevo_valor)
-
-        productos[indice][clave] = nuevo_valor
-        print(f"El valor de '{clave}' en el producto {indice} ha sido actualizado a {nuevo_valor}.")
-    except (ValueError, IndexError):
-        print("Error: Ingrese un índice válido y un valor numérico para 'precio' y 'cantidad'.")
-
-# Ejemplo de uso:
-modificar_producto()
-'''
+# Funcion actualziar , actualiza la canditad del producto seleccionandolo por su ID 
 def actualizar_cantidad():
     if not productos:
         print('No hay productos')
@@ -113,8 +99,21 @@ def actualizar_cantidad():
     else:
         print('La clave seleccionada no existe ')
 
-def eliminar_producto():
-    pass
+def eliminar_producto(productos):
+    borrar = input("¿Qué producto desea eliminar? : ")
+
+    # Buscamos el índice del diccionario que queremos eliminar
+    for i, producto in enumerate(productos):
+        if producto["nombre"] == borrar:
+            # Eliminamos el elemento por su índice
+            del productos[i]
+            print(f"El producto {borrar} se ha eliminado.")
+            return  # Salimos de la función una vez que encontramos y eliminamos el producto
+
+    # Si no encontramos el producto, mostramos un mensaje de error
+    print(f"El producto {borrar} no se encontró.")
+
+
 
 # Ejecución de la función main() - (NO ELIMINAR)
 if __name__ == "__main__":
