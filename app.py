@@ -114,7 +114,7 @@ def eliminar_producto(productos):
 
     # Si no encontramos el producto, mostramos un mensaje de error
     print(f"El producto {borrar} no se encontró.")
-
+  
 
 
 # Ejecución de la función main() - (NO ELIMINAR)
