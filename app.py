@@ -1,11 +1,11 @@
 
-# from funcion_db import *
+from funcion_db import *
+# from colorama
+
 productos = []
-codigo_prod = 1
 
 def main():
     while True:
-        
         print('''
         
        ###################
@@ -39,7 +39,7 @@ def main():
             mostrar_productos()
         elif opcion == 3:
             print("Actualizar cantidad de producto")
-            actualizar_cantidad()
+            actualizar_cantidad()       
         elif opcion == 4:
             print("Eliminar producto")
             eliminar_producto()
@@ -66,26 +66,44 @@ def registrar_producto():
     precio = float(input('Ingrese precio: '))
     categoria = input('Ingrese la categoria: ')
 
-    nuevo_producto = {
-        'nombre': nombre,
-        'descripcion': descripcion,
-        'cantidad': cantidad,
-        'precio': precio,
-        'categoria': categoria
-        }
-    productos.append(nuevo_producto)
-    print('Producto registrado ', productos)
+    conexion = sql.connect('inventario.db')
+    cursor = conexion.cursor()
+    instruccion = f"INSERT INTO productos(nombre , descripcion, cantidad, precio,  categoria) VALUES(?, ? , ?, ?, ? )"
+    cursor.execute(instruccion,(nombre, descripcion,cantidad,  precio, categoria))
+
+    print(f" Producto '{nombre}' , agregado " )    
+    conexion.commit()
+    conexion.close()
+
+
     
  # Funcion mostrar, muestra todo lo que esta en el inventario    
 def mostrar_productos():
-    if not productos:
-        print("No hay productos registrados.")
-        return
+    conexion = sql.connect('inventario.db')
+    cursor = conexion.cursor()
+    instruccion = f" SELECT * FROM productos"
+    cursor.execute(instruccion)
+    mostrar = cursor.fetchall()
+    conexion.commit()
+    conexion.close()
 
-    for i, producto in enumerate(productos, start=1):
-        print(f"Producto {i}:")
-        for clave, valor in producto.items():
-            print(f"  {clave}: {valor}")
+    print('Inventario actual: ')
+    print('''
+        
+       ###################
+         ABASTO DON JOSE
+       ###################
+        ''')
+
+    for i in mostrar:
+        id, nombre, descripcion, cantidad, precio, categoria = i
+        print(f'''ID: {id}
+        Nombre: {nombre}
+        Descripcion: {descripcion}
+        Cantidad: {cantidad}
+        Precio: {precio}
+        Categoria: {categoria}        
+        ''')
 
 # Funcion actualziar , actualiza la canditad del producto seleccionandolo por su ID 
 def actualizar_cantidad():
