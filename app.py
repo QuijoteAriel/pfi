@@ -2,8 +2,6 @@
 from funcion_db import *
 # from colorama
 
-productos = []
-
 def main():
     while True:
         print('''
@@ -107,33 +105,44 @@ def mostrar_productos():
 
 # Funcion actualziar , actualiza la canditad del producto seleccionandolo por su ID 
 def actualizar_cantidad():
-    if not productos:
-        print('No hay productos')
-    else:
-        clave_prod = input('Que clave/producto deseas cambiar la cantidad? : ')
-        if clave_prod in productos:
-            actualizar_can = int(input('Que cantidad deseas actualziar? : '))
-            productos[clave_prod] = actualizar_can
-            print('Cantidad actualizada correctamente')
+    conexion = sql.connect('inventario.db')
+    cursor = conexion.cursor()
+
+    try:
+        id_producto = int(input("Ingrese el ID del producto a actualizar: "))
+        nueva_cantidad = int(input("Ingrese la nueva cantidad: "))
+
+        # Ejecutar la consulta con parámetros para prevenir inyección SQL
+        cursor.execute("UPDATE productos SET cantidad=? WHERE id=?", (nueva_cantidad, id_producto))
+
+        # Comprobar si se actualizaron filas
+        filas_afectadas = cursor.rowcount
+        if filas_afectadas > 0:
+            print(f"Se actualizó la cantidad del producto con ID {id_producto}")
         else:
-            print('La clave seleccionada no existe')
+            print(f"No se encontró ningún producto con ID {id_producto}")
 
-def eliminar_producto(productos):
-    borrar = input("¿Qué producto desea eliminar? : ")
+    except ValueError:
+        print("Error: Debe ingresar un ID y una cantidad válidos (números enteros)")
+    except sqlite3.Error as e:
+        print(f"Error al actualizar la cantidad: {e}")
+    finally:
+        conexion.commit()
+        conexion.close()
 
+def eliminar_producto():
+    conexion = sql.connect('inventario.db')
+    cursor = conexion.cursor()
+    try:
+        id_producto = input('Que producto/ ID quieres eliminar ? ')
+        cursor.execute("DELETE productos SET ID=? WHERE id=?", id_producto)
 
-    # Buscamos el índice del diccionario que queremos eliminar
-    for i, producto in enumerate(productos):
-        if producto["nombre"] == borrar:
-            # Eliminamos el elemento por su índice
-            del productos[i]
-            print(f"El producto {borrar} se ha eliminado.")
-            return  # Salimos de la función una vez que encontramos y eliminamos el producto
-
-    # Si no encontramos el producto, mostramos un mensaje de error
-    print(f"El producto {borrar} no se encontró.")
-  
-
+        print(f'Id {id_producto}eliminado correctamente')
+    except:
+        print('El Id no encontrado / no existe')
+    finally:
+        conexion.commit()
+        conexion.close()
 
 # Ejecución de la función main() - (NO ELIMINAR)
 if __name__ == "__main__":
