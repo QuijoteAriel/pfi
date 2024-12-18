@@ -43,7 +43,7 @@ def main():
             eliminar_producto()
         elif opcion == 5:
             print("Buscar producto")
-            # Aquí podrías añadir código para buscar productos
+            buscar_producto()
         elif opcion == 6:
             print("Reporte de bajo stock")
             # Aquí podrías añadir código para reporte de bajo stock
@@ -85,22 +85,26 @@ def mostrar_productos():
     conexion.commit()
     conexion.close()
 
-    print('Inventario actual: ')
-    print('''
+
+    if not mostrar:
+        print('No hay productos en el inventario')
+    else:
+        print('Inventario actual: ')
+        print('''
         
        ###################
          ABASTO DON JOSE
        ###################
         ''')
 
-    for i in mostrar:
-        id, nombre, descripcion, cantidad, precio, categoria = i
-        print(f'''ID: {id}
-        Nombre: {nombre}
-        Descripcion: {descripcion}
-        Cantidad: {cantidad}
-        Precio: {precio}
-        Categoria: {categoria}        
+        for i in mostrar:
+            id, nombre, descripcion, cantidad, precio, categoria = i
+            print(f'''ID: {id}
+            Nombre: {nombre}
+            Descripcion: {descripcion}
+            Cantidad: {cantidad}
+            Precio: {precio}
+            Categoria: {categoria}        
         ''')
 
 # Funcion actualziar , actualiza la canditad del producto seleccionandolo por su ID 
@@ -124,7 +128,7 @@ def actualizar_cantidad():
 
     except ValueError:
         print("Error: Debe ingresar un ID y una cantidad válidos (números enteros)")
-    except sqlite3.Error as e:
+    except sql.Error as e:
         print(f"Error al actualizar la cantidad: {e}")
     finally:
         conexion.commit()
@@ -133,17 +137,93 @@ def actualizar_cantidad():
 def eliminar_producto():
     conexion = sql.connect('inventario.db')
     cursor = conexion.cursor()
-    try:
-        id_producto = input('Que producto/ ID quieres eliminar ? ')
-        cursor.execute("DELETE productos SET ID=? WHERE id=?", id_producto)
+    id_producto = input('Que ID quieres eliminar ? ')
+    cursor.execute("DELETE FROM productos WHERE id=? ", (id_producto))
 
-        print(f'Id {id_producto}eliminado correctamente')
-    except:
+    if cursor.rowcount > 0:
+        print(f'Id {id_producto} del producto fue eliminado correctamente')
+    else:
         print('El Id no encontrado / no existe')
-    finally:
-        conexion.commit()
-        conexion.close()
+    
+    conexion.commit()
+    conexion.close()
 
+
+# def buscar_producto():
+#     id_producto = input('Numero del ID a buscar : ')
+#     conexion = sql.connect('inventario.db')
+#     cursor = conexion.cursor()
+#     instruccion = "SELECT * FROM productos WHERE id= ?"
+#     cursor.execute(instruccion,(id,))
+#     resultado = cursor.fetchone()
+#     conexion.close()
+
+#     if not resultado:
+#         print(f'No se encontro el producto con ID ', {id_producto})
+        
+#     elif id_producto:
+#         print('Id encontrado')
+#         for id_producto in productos:
+#             id, nombre, descripcion, precio, cantidad, categoria = productos 
+#         print('Id encontrado: ')
+#         print(f'ID : {id}')
+#         print(f'Nombre : {nombre}')
+        
+
+def buscar_producto():
+    """Busca un producto en la base de datos por nombre, categoría o ID."""
+
+    def buscar(campo, valor):
+        """Función auxiliar para realizar la consulta a la base de datos."""
+        conn = sql.connect('inventario.db')
+        cursor = conn.cursor()
+        instruccion = f"SELECT * FROM productos WHERE {campo} LIKE ?"
+        cursor.execute(instruccion, (f"%{valor}%",))
+        resultados = cursor.fetchall()
+        conn.close()
+        return resultados
+
+    while True:
+        print("Desea buscar un producto por:")
+        print("1. Nombre")
+        print("2. Categoría")
+        print("3. ID")
+        opcion = input("Seleccione una opción (o presione Enter para salir): ")
+
+        if not opcion:
+            break
+
+        if opcion in ('1', '2', '3'):
+            if opcion == '1':
+                campo = 'nombre'
+            elif opcion == '2':
+                campo = 'categoria'
+            else:
+                campo = 'id'
+
+            valor = input(f"Ingrese el {campo} del producto: ")
+            resultados = buscar(campo, valor)
+
+            if not resultados:
+                print(f"No se encontraron productos con el {campo} '{valor}'.")
+            else:
+                print("Productos encontrados:")
+                for producto in resultados:
+                    id, nombre, descripcion, precio, cantidad, categoria = producto
+                    print(f"ID: {id}")
+                    print(f"Nombre: {nombre}")
+                    print(f"Descripcion: {descripcion}")
+                    print(f"Precio: {precio}")
+                    print(f"Cantidad: {cantidad}")
+                    print(f"Categoria: {categoria}")
+        else:
+            print("Opción inválida.")
+
+def bajo_stock():
+    pass
+
+
+        
 # Ejecución de la función main() - (NO ELIMINAR)
 if __name__ == "__main__":
     main()

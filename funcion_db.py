@@ -1,7 +1,5 @@
 import sqlite3 as sql
 
-#ruta_db = "pfi/inventario.db"
-
 def create_data_base():
     conexion = sql.connect('inventario.db')
     conexion.commit()
@@ -26,5 +24,5 @@ def db_crear_tabla_productos():
     conexion.close()
 
 if __name__ == "__main__":
-    #create_data_base()
+    create_data_base()
     db_crear_tabla_productos()
