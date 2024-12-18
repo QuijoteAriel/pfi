@@ -1,11 +1,37 @@
-# pfi
+# Proyecto Final Integrador 
+
 ## Entrega de proyecto final curso C24212 Talento Tech
 
-Es un programa escrito en python que consta de una pequeño inventario, que esta diseñado para agregar, modificar, ajustar y eliminar items desdeuna base de datos usando SQLite3,
+Es un programa escrito en Python que consta de un pequeño inventario,
+que esta diseñado para:
+
+- Agregar
+- Modificar
+- Editar
+- Eliminar 
+- Buscar 
+- Generar reporde de bajo stock 
+
+Usando una base SQLite3 
 
 requisitos:
 
-- Tener Python3 instalado 
-- Tener SQLlite3
+- Python3
+- SQLite3
 
-ejecutar app.py 
+## Ejecutar :
+
+- En Linux
+```
+python3 app.py 
+
+```
+
+- En Windows 
+
+```
+py app.py 
+
+```
+
+O desde su  editor favorito 

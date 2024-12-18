@@ -148,28 +148,6 @@ def eliminar_producto():
     conexion.commit()
     conexion.close()
 
-
-# def buscar_producto():
-#     id_producto = input('Numero del ID a buscar : ')
-#     conexion = sql.connect('inventario.db')
-#     cursor = conexion.cursor()
-#     instruccion = "SELECT * FROM productos WHERE id= ?"
-#     cursor.execute(instruccion,(id,))
-#     resultado = cursor.fetchone()
-#     conexion.close()
-
-#     if not resultado:
-#         print(f'No se encontro el producto con ID ', {id_producto})
-        
-#     elif id_producto:
-#         print('Id encontrado')
-#         for id_producto in productos:
-#             id, nombre, descripcion, precio, cantidad, categoria = productos 
-#         print('Id encontrado: ')
-#         print(f'ID : {id}')
-#         print(f'Nombre : {nombre}')
-        
-
 def buscar_producto():
     """Busca un producto en la base de datos por nombre, categoría o ID."""
 
