@@ -1,8 +1,7 @@
 
-from funcion_db import *
-# from colorama
+import sqlite3 as sql  # Importamos la librería para trabajar con SQLite3 
 
-def main():
+def main():  # Función principal del programa
     while True:
         print('''
         
@@ -46,7 +45,7 @@ def main():
             buscar_producto()
         elif opcion == 6:
             print("Reporte de bajo stock")
-            # Aquí podrías añadir código para reporte de bajo stock
+            bajo_stock()
         elif opcion == 7:
             print("Saliendo del sistema...")
             break  # Salir del bucle y terminar el programa
@@ -55,27 +54,63 @@ def main():
             continue
 
 
-# Funcion registrar  genera un dicccionario a partir de inputs con los datos que se piden    
-def registrar_producto():
+def create_data_base(): #creamos la base de datos
+    conexion = sql.connect('inventario.db')
+    conexion.commit()
+    conexion.close()
+    
+def db_crear_tabla_productos(): #creamos la tabla productos
+    conexion = sql.connect('inventario.db') #creamos la base de datos
+    cursor = conexion.cursor()  # siempre igual
+    cursor.execute(
+            """ 
+            CREATE TABLE IF NOT EXISTS productos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT NOT NULL,
+            descripcion TEXT,
+            categoria TEXT NOT NULL,
+            cantidad INTEGER NOT NULL,
+            precio REAL NOT NULL
+            )
+            """
+        )
+    conexion.commit()
+    conexion.close()
+
+create_data_base()
+db_crear_tabla_productos()
+
+
+# Funcion registrar  genera un dicccionario a partir de inputs con los datos que se piden 
+# Pide los datos del producto y usa el motodo title para guardar
+
+
+def registrar_producto(): 
   
     nombre = input('Ingrese el nombre del producto: ')
+    nombre = nombre.title()
     descripcion = input('Ingrese la descrición del producto: ')
+    descripcion = descripcion.title()
     cantidad = int(input('Ingrese la cantida: '))
     precio = float(input('Ingrese precio: '))
     categoria = input('Ingrese la categoria: ')
+    categoria = categoria.title()
 
     conexion = sql.connect('inventario.db')
     cursor = conexion.cursor()
     instruccion = f"INSERT INTO productos(nombre , descripcion, cantidad, precio,  categoria) VALUES(?, ? , ?, ?, ? )"
     cursor.execute(instruccion,(nombre, descripcion,cantidad,  precio, categoria))
 
-    print(f" Producto '{nombre}' , agregado " )    
+    print(f" Producto '{nombre}' , agregado con exito " )    
     conexion.commit()
     conexion.close()
 
 
     
- # Funcion mostrar, muestra todo lo que esta en el inventario    
+ # Funcion mostrar, muestra todo lo que esta en el inventario   
+ # Muestra  todo el inbentario existente en el invetario con todas sus caracteristicas
+
+
 def mostrar_productos():
     conexion = sql.connect('inventario.db')
     cursor = conexion.cursor()
@@ -87,7 +122,7 @@ def mostrar_productos():
 
 
     if not mostrar:
-        print('No hay productos en el inventario')
+        print('No hay productos en el inventario') # en caso la base de datos este vacia
     else:
         print('Inventario actual: ')
         print('''
@@ -108,6 +143,7 @@ def mostrar_productos():
         ''')
 
 # Funcion actualziar , actualiza la canditad del producto seleccionandolo por su ID 
+# Pide el ID del producto y la nueva cantidad que se quiere actualizar
 def actualizar_cantidad():
     conexion = sql.connect('inventario.db')
     cursor = conexion.cursor()
@@ -134,6 +170,10 @@ def actualizar_cantidad():
         conexion.commit()
         conexion.close()
 
+# Funcion eliminar_producto, elimina un producto seleccionandolo por su ID
+# Pide al usuario que ingrese el ID del producto que quiere eliminar
+
+
 def eliminar_producto():
     conexion = sql.connect('inventario.db')
     cursor = conexion.cursor()
@@ -147,6 +187,9 @@ def eliminar_producto():
     
     conexion.commit()
     conexion.close()
+
+# Funcion buscar_producto, busca un producto por nombre, categoria o ID
+# Pide al usuario que ingrese el campo por el cual quiere buscar el producto
 
 def buscar_producto():
     """Busca un producto en la base de datos por nombre, categoría o ID."""
@@ -197,11 +240,34 @@ def buscar_producto():
         else:
             print("Opción inválida.")
 
+# Funcion bajo_stock, muestra los productos que tienen stock por debajo de un umbral
+# Pide al usuario que ingrese el umbral de stock que quiere revisar
+
 def bajo_stock():
-    pass
+    conexion = sql.connect('inventario.db')
+    cursor = conexion.cursor()
+    umbral = int(input('Cual es el umbral de stock que quierer revisar ? '))
+    cursor.execute("SELECT * FROM productos WHERE cantidad < ?", (umbral,))
+    productos_bajo_stock  = cursor.fetchall()
+
+    if not productos_bajo_stock:
+        print(f"No hay productos con stock por debajo de {umbral}.")
+    else:
+        print(f"Productos con stock por debajo de {umbral}:")
+        for producto in productos_bajo_stock:
+            id, nombre, descripcion, precio, cantidad, categoria = producto
+            print(f"ID: {id}")
+            print(f"Nombre: {nombre}")
+            print(f"Descripcion: {descripcion}")
+            print(f"Precio: {precio}")
+            print(f"Cantidad: {cantidad}")
+            print(f"Categoria: {categoria}")
+
+    conexion.close()    
+    
 
 
         
-# Ejecución de la función main() - (NO ELIMINAR)
+# Ejecución de la función main()
 if __name__ == "__main__":
     main()
