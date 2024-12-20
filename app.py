@@ -81,7 +81,7 @@ create_data_base()
 db_crear_tabla_productos()
 
 
-# Funcion registrar  genera un dicccionario a partir de inputs con los datos que se piden 
+# Funcion registrar_producto, registra un producto en el inventario
 # Pide los datos del producto y usa el motodo title para guardar
 
 
@@ -107,8 +107,7 @@ def registrar_producto():
 
 
     
- # Funcion mostrar, muestra todo lo que esta en el inventario   
- # Muestra  todo el inbentario existente en el invetario con todas sus caracteristicas
+# Muestra  todo el inbentario existente en el invetario con todas sus caracteristicas
 
 
 def mostrar_productos():
@@ -144,6 +143,7 @@ def mostrar_productos():
 
 # Funcion actualziar , actualiza la canditad del producto seleccionandolo por su ID 
 # Pide el ID del producto y la nueva cantidad que se quiere actualizar
+
 def actualizar_cantidad():
     conexion = sql.connect('inventario.db')
     cursor = conexion.cursor()
@@ -153,7 +153,7 @@ def actualizar_cantidad():
         nueva_cantidad = int(input("Ingrese la nueva cantidad: "))
 
         # Ejecutar la consulta con parámetros para prevenir inyección SQL
-        cursor.execute("UPDATE productos SET cantidad=? WHERE id=?", (nueva_cantidad, id_producto))
+        cursor.execute("UPDATE productos SET cantidad=? WHERE id=?", (nueva_cantidad, id_producto,))
 
         # Comprobar si se actualizaron filas
         filas_afectadas = cursor.rowcount
@@ -178,7 +178,7 @@ def eliminar_producto():
     conexion = sql.connect('inventario.db')
     cursor = conexion.cursor()
     id_producto = input('Que ID quieres eliminar ? ')
-    cursor.execute("DELETE FROM productos WHERE id=? ", (id_producto))
+    cursor.execute("DELETE FROM productos WHERE id=? ", (id_producto,))
 
     if cursor.rowcount > 0:
         print(f'Id {id_producto} del producto fue eliminado correctamente')
@@ -206,21 +206,18 @@ def buscar_producto():
 
     while True:
         print("Desea buscar un producto por:")
-        print("1. Nombre")
-        print("2. Categoría")
-        print("3. ID")
+        print("1. ID")
+        print("2. Nombre")
         opcion = input("Seleccione una opción (o presione Enter para salir): ")
 
         if not opcion:
             break
 
-        if opcion in ('1', '2', '3'):
+        if opcion in ('1', '2'):
             if opcion == '1':
-                campo = 'nombre'
-            elif opcion == '2':
-                campo = 'categoria'
-            else:
                 campo = 'id'
+            else:
+                campo = 'nombre'
 
             valor = input(f"Ingrese el {campo} del producto: ")
             resultados = buscar(campo, valor)
