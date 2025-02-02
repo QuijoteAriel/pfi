@@ -1,37 +1,23 @@
-# Proyecto Final Integrador 
+# Abasto Don José - Sistema de Gestión de Inventario
 
-## Entrega de proyecto final curso C24212 Talento Tech
+Este proyecto es un sistema de gestión de inventario para la tienda "Abasto Don José". Permite administrar los productos, incluyendo agregar nuevos productos, mostrar el inventario actual, actualizar la cantidad de productos existentes, eliminar productos, buscar productos por nombre o ID, y generar un reporte de productos con bajo stock.
 
-Es un programa escrito en Python que consta de un pequeño gestor de inventario,
-que esta diseñado para:
+## Características
 
-- Agregar
-- Modificar
-- Editar
-- Eliminar 
-- Buscar 
-- Generar reporde de bajo stock de productos
+* **Agregar Producto:** Permite registrar nuevos productos en el inventario, incluyendo nombre, descripción, cantidad, precio y categoría.
+* **Mostrar Producto:** Muestra un listado completo de todos los productos en el inventario, con sus respectivos detalles.
+* **Actualizar Cantidad de Producto:** Permite modificar la cantidad de un producto existente, identificándolo por su ID.
+* **Eliminar Producto:** Permite eliminar un producto del inventario, identificándolo por su ID.
+* **Buscar Producto:** Permite buscar productos en el inventario por nombre o ID.
+* **Reporte de Bajo Stock:** Genera un reporte de los productos cuyo stock está por debajo de un umbral especificado por el usuario.
 
-Usando una base SQLite3 
+## Requisitos
 
-requisitos:
+* Python 3
+* Librería `sqlite3` (generalmente incluida con Python)
 
-- Python3
-- SQLite3
+## Instalación
 
-## Ejecutar desde consola:
-
-- En Linux
-```
-python3 app.py 
-```
-
-- En Windows o Mac
-
-```
-py app.py 
-```
-
-O desde su  editor favorito 
-
-**Software  con licencia GPL3**
+1. Clona este repositorio:
+   ```bash
+   git clone [https://github.com/QuijoteAriel/pfi]
